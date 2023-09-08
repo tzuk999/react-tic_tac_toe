@@ -1,13 +1,9 @@
 import React, { useState } from 'react'
 
 
-function Square() {
-    const [value, setValue] = useState(null);
-    function handleClick() {
-        setValue("X");
-      };
+function Square({value}) {
   return (
-    <button onClick={handleClick} className="square">{value}</button>
+    <button className="square">{value}</button>
   );
 
 }
