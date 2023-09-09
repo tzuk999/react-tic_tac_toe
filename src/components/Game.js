@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Board from "./Board";
+import Select from "react-select";
 
 function Game() {
     const [history, setHistory] = useState([Array(9).fill(null)]);
@@ -18,30 +19,36 @@ function Game() {
         setCurrentMove(nextMove);
       }
     
-      const moves = history.map((squares, move) => {
+      const options = history.map((squares, move) => {
         let description;
         if (move > 0) {
-          description = 'Go to move #' + move;
+          description = "Go to move #" + move;
         } else {
-          description = 'Go to game start';
+          description = "Go to game start";
         }
-        return (
-          <li key={move}>
-            <button onClick={() => jumpTo(move)}>{description}</button>
-          </li>
-        );
+        return {
+          value: move,
+          label: description,
+        };
       });
+      const handleChange = (selectedOption) => {
+        jumpTo(selectedOption.value);
+      };
 
-    return (
-      <div className="game">
-        <div className="game-board">
-          <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay}/>
+      return (
+        <div className="game">
+          <div className="game-board">
+            <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
+          </div>
+          <div className="game-info">
+            <Select
+              options={options}
+              onChange={handleChange}
+              placeholder="Select a move"
+            />
+          </div>
         </div>
-        <div className="game-info">
-          <ol>{moves}</ol>
-        </div>
-      </div>
-    );
+      );
   }
 
   export default Game
